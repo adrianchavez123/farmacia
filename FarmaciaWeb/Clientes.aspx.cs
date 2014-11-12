@@ -14,6 +14,11 @@ public partial class Clientes : System.Web.UI.Page
     {
         con = new Conexion();
         mostrarPanel(3);
+        if ((String)Session["puesto"] == null)
+        {
+            Response.Write("<script>alert('Para acceder a este contenido debes iniciar sesion')</script>");
+            Response.Redirect("Default.aspx");
+        }
     }
     protected void Button1_Click(object sender, EventArgs e)
     {

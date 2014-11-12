@@ -11,17 +11,71 @@
             width: 161px;
         }
     </style>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="bootstrap.js"> </script>
+    <link href="bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="bootstrap-theme.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body bgcolor="#c0c0c0">
-    <form id="form1" runat="server">
+<div class="navbar-wrapper">
+  <div class="container">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      
+        <div class="navbar-header">
+	    <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </a>
+        <a class="navbar-brand" href="#">Farmacia</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="Default.aspx">Iniciar sesion</a></li>
+            <li class="active"><a href="Clientes.aspx">Clientes</a></li>
+            <li><a href="Proveedores.aspx">Proveedores</a></li>
+            <li><a href="Empleados.aspx">Empleados</a></li>
+            <li><a href="Articulos.aspx">Articulos</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ventas <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="Venta.aspx">Ventas</a></li>
+                <li><a href="verVentas.aspx">Detalles Ventas</a></li>
+                
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Compras <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="Compra.aspx">Compras</a></li>
+                <li><a href="VerCompras.aspx">Detalles Compras</a></li>
+            
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+    </div>
+  </div><!-- /container -->
+</div><!-- /navbar wrapper -->
+    <br />
+    <br />
+    <br />
+    <br />
+     <div class="row">
+    
+        <div class="col-sm-8 col-sm-offset-2">
+
+    <form id="form1" runat="server" class="form-horizontal">
     <div>
     
         
 
-            <asp:LinkButton ID="LinkAgregar" runat="server" onclick="LinkAgregar_Click">Agregar</asp:LinkButton>&nbsp;
-            <asp:LinkButton ID="LinkEliminar" runat="server" onclick="LinkEliminar_Click">Eliminar</asp:LinkButton>&nbsp;
-            <asp:LinkButton ID="LinkModificar" runat="server" onclick="LinkModificar_Click">Modificar</asp:LinkButton>&nbsp;
-            <asp:LinkButton ID="LinkBuscar" runat="server" onclick="LinkBuscar_Click">Buscar</asp:LinkButton>
+            <asp:LinkButton ID="LinkAgregar" runat="server" onclick="LinkAgregar_Click" class="btn btn-default">Agregar</asp:LinkButton>&nbsp;
+            <asp:LinkButton ID="LinkEliminar" runat="server" onclick="LinkEliminar_Click" class="btn btn-default">Eliminar</asp:LinkButton>&nbsp;
+            <asp:LinkButton ID="LinkModificar" runat="server" onclick="LinkModificar_Click" class="btn btn-default">Modificar</asp:LinkButton>&nbsp;
+            <asp:LinkButton ID="LinkBuscar" runat="server" onclick="LinkBuscar_Click" class="btn btn-default">Buscar</asp:LinkButton>
 
         <asp:Panel ID="Panel1" runat="server" Height="351px" Width="441px" 
             BackColor="#6699FF">
@@ -35,69 +89,69 @@
                     <td class="style1">
                         Nombre</td>
                     <td>
-                        <asp:TextBox ID="textBoxNombre" runat="server" Width="242px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxNombre" runat="server" Width="242px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td class="style1">
                         Domicilio</td>
                     <td>
-                        <asp:TextBox ID="textBoxDomicilio" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxDomicilio" runat="server" Width="240px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td class="style1">
                         Colonia</td>
                     <td>
-                        <asp:TextBox ID="textBoxColonia" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxColonia" runat="server" Width="240px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td  class="style1">
                         Telefono</td>
                     <td>
-                        <asp:TextBox ID="textBoxTelefono" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxTelefono" runat="server" Width="240px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td class="style1">
                         Celular</td>
                     <td>
-                        <asp:TextBox ID="textBoxCelular" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxCelular" runat="server" Width="240px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td class="style1">
                         Email</td>
                     <td>
-                        <asp:TextBox ID="textBoxEmail" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxEmail" runat="server" Width="240px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td class="style1">
                         Codigo Postal</td>
                     <td>
-                        <asp:TextBox ID="textBoxCp" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxCp" runat="server" Width="240px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td class="style1">
                         Municipio</td>
                     <td>
-                        <asp:TextBox ID="textBoxMunicipio" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxMunicipio" runat="server" Width="240px" class="form-control"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td class="style1">
                         Estado</td>
                     <td>
-                        <asp:TextBox ID="textBoxEstado" runat="server" Width="240px"></asp:TextBox>
+                        <asp:TextBox ID="textBoxEstado" runat="server" Width="240px" class="form-control"></asp:TextBox>
                         
                     </td>
                 </tr>
                 <tr>
                 <td><asp:Button ID="ButtonRegistrar" runat="server" onclick="Button1_Click" 
-                            Text="Registrar" />
+                            Text="Registrar" class="btn btn-success"/>
                 </td>
                 </tr>
             </table>
@@ -114,7 +168,7 @@
             Text="Eliminar Cliente"></asp:Label>
         <br />
         <asp:DropDownList ID="DropDownList1" runat="server" 
-            DataSourceID="SqlDataSource2" DataTextField="nombre" DataValueField="idCliente">
+            DataSourceID="SqlDataSource2" DataTextField="nombre" DataValueField="idCliente" class="form-control">
         </asp:DropDownList>
         <asp:DataList ID="DataList1" runat="server" DataKeyField="idCliente" 
             DataSourceID="SqlDataSource2" Visible="False">
@@ -137,7 +191,7 @@
             </SelectParameters>
         </asp:SqlDataSource>
         <asp:Button ID="ButtonEliminar" runat="server" onclick="ButtonEliminar_Click" 
-            Text="Eliminar" />
+            Text="Eliminar" class="btn btn-danger"/>
        
     </asp:Panel>
      <asp:Panel ID="panelMostrar" runat="server" BackColor="#009999" Height="734px" 
@@ -182,7 +236,7 @@
                 </ItemTemplate>
             </asp:DataList>
             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
-                DataSourceID="SqlDataSourceMostrar" Width="636px">
+                DataSourceID="SqlDataSourceMostrar" Width="636px" class="table table-striped">
                 <Columns>
                     <asp:BoundField DataField="nombre" HeaderText="nombre" 
                         SortExpression="nombre" />
@@ -226,7 +280,7 @@
                 <td>
                    <asp:DropDownList ID="DropDownList2" runat="server" 
                 DataSourceID="SqlDataSource2" DataTextField="nombre" DataValueField="idCliente" 
-                        AutoPostBack="True" onselectedindexchanged="DropDownList2_SelectedIndexChanged">
+                        AutoPostBack="True" onselectedindexchanged="DropDownList2_SelectedIndexChanged" class="form-control">
             </asp:DropDownList>
                 </td>
             </tr>
@@ -234,68 +288,70 @@
                 <td class="style1">
                     Domicilio</td>
                 <td>
-                    <asp:TextBox ID="textBoxDomicilioModif" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxDomicilioModif" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style1">
                     Colonia</td>
                 <td>
-                    <asp:TextBox ID="textBoxColoniaModif" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxColoniaModif" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td  class="style1">
                     Telefono</td>
                 <td>
-                    <asp:TextBox ID="textBoxTelefonoModif" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxTelefonoModif" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style1">
                     Celular</td>
                 <td>
-                    <asp:TextBox ID="textBoxCelularModif" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxCelularModif" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style1">
                     Email</td>
                 <td>
-                    <asp:TextBox ID="textBoxEmailModif" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxEmailModif" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style1">
                     Codigo Postal</td>
                 <td>
-                    <asp:TextBox ID="textBoxCpModif" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxCpModif" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style1">
                     Municipio</td>
                 <td>
-                    <asp:TextBox ID="textBoxMunicipioModif" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxMunicipioModif" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td class="style1">
                     Estado</td>
                 <td>
-                    <asp:TextBox ID="textBoxEstado0" runat="server" Width="240px"></asp:TextBox>
+                    <asp:TextBox ID="textBoxEstado0" runat="server" Width="240px" class="form-control"></asp:TextBox>
                 </td>
             </tr>
             <tr>
                 <td>
                     <asp:Button ID="ButtonModificar" runat="server"  
-                        Text="Modificar" onclick="ButtonModificar_Click" />
+                        Text="Modificar" onclick="ButtonModificar_Click" class="btn btn-warning"/>
                 </td>
             </tr>
         </table>
 
     </asp:Panel>
     </form>
+    </div>
+    </div>
     <p>
         &nbsp;</p>
 </body>

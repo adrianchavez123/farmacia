@@ -117,7 +117,7 @@ public class Conexion
 
     public bool insertarEmpleado(string nombre, string puesto, string sueldo, string antiguedad, string celular, string telefono, string email, string domicilio, string noSS)
     {
-        string sentencia = "insert into empleados(nombre,puesto,sueldo,antiguedad,celular,telefono,email,domicilio,noSeguroSocial,activo)values(@Nombre, @Puesto, @Sueldo,@Antiguedad,@Celular,@Telefono,@Email,@Domicilio,@NoSS,1)";
+        string sentencia = "insert into empleados(nombre,puesto,sueldo,antiguedad,celular,telefono,email,domicilio,noSeguroSocial,activo,password)values(@Nombre, @Puesto, @Sueldo,@Antiguedad,@Celular,@Telefono,@Email,@Domicilio,@NoSS,1,'1234')";
 
         cmd = new SqlCommand(sentencia, con);
 
@@ -353,6 +353,147 @@ public class Conexion
 
         if (x == 0)
             return false;
+
+        return true;
+    }
+
+
+    public string[] iniciarSesion(string nombre, string password)
+    {
+        string sentencia = "select * from empleados where nombre ='" + nombre +"' and password = '"+password+"'";
+        cmd = new SqlCommand(sentencia, con);
+        reader = cmd.ExecuteReader();
+        String []data = new String[2];
+        while (reader.Read())
+        {
+            
+            data[0] = reader["puesto"].ToString();
+            data[1] = reader["idEmpleado"].ToString();
+
+        }
+
+        return data;
+    }
+
+
+    public string[] getArticulos()
+    {
+        string sentencia = "select * from articulos where activo = 1";
+        cmd = new SqlCommand(sentencia, con);
+        reader = cmd.ExecuteReader();
+        string data = "";
+        int i = 0;
+        while (reader.Read())
+        {
+            data = reader["nombre"].ToString();
+            i++;
+
+        }
+        if (i != 0)
+        {
+            reader.Close();
+            SqlDataReader reader2 = cmd.ExecuteReader();
+            String []producto = new String[i];
+            i = 0;
+            while (reader2.Read())
+            {
+                string nombre = reader2["nombre"].ToString();
+                string existencia=reader2["existencia"].ToString();
+                string precio= reader2["precioVenta"].ToString();
+                string id = reader2["idArticulo"].ToString();
+
+                string temp = nombre + "¬" + existencia + "¬" + precio+"¬"+id;
+                producto[i] = temp;
+                i++;
+            }
+
+            return producto;
+        }
+
+        return null;
+    }
+
+    public bool realizarventa(string[] productosnombre, string[] cantidadproducto, string p)
+    {
+        
+        
+        reader.Close();
+        string sentencia = "insert into ventas(fecha,idEmpleado)values(GETDATE(),"+p+")";
+
+        cmd = new SqlCommand(sentencia, con);
+        
+        cmd.ExecuteNonQuery();
+
+
+        SqlCommand comand = new SqlCommand("select * from ventas", con);
+        SqlDataReader r = comand.ExecuteReader();
+        string folio = "";
+        while (r.Read())
+        {
+            folio = r["folioVenta"].ToString();
+        }
+
+            for (int a = 0; a < productosnombre.Length; a++)
+            {
+                //cambiar folio venta
+                string sen = "insert into detalleventas(folioVenta,idArticulo,cantidad)values("+folio+","+productosnombre[a]+","+cantidadproducto[a]+")";
+                Console.Write(sen);
+                SqlCommand cmd2 = new SqlCommand(sen, con);
+                cmd2.ExecuteReader();
+                
+            }
+
+            for (int i = 0; i < productosnombre.Length; i++)
+            {
+
+                SqlCommand cc = new SqlCommand("select existencia from articulos where idArticulo="+productosnombre[i], con);
+                SqlDataReader res = cc.ExecuteReader();
+                string cantidad="0";
+                while (res.Read())
+                {
+                    cantidad =res["existencia"].ToString();
+                }
+
+                int nuevototal = (Convert.ToInt16(cantidad) - Convert.ToInt16(cantidadproducto[i])); 
+                string sen = "update articulos set existencia ="+nuevototal+" where idArticulo="+productosnombre[i];
+                Console.Write(sen);
+                SqlCommand cmd3 = new SqlCommand(sen, con);
+                cmd3.ExecuteReader();
+            }
+                return false;
+
+    }
+
+    public bool realizarcompra(string[] productosnombre, string[] cantidadproducto, string[] preciocompra, string[] porciento, string s)
+    {
+        for (int i = 0; i < productosnombre.Length; i++)
+        {
+            string sentencia = "insert into compras (idProveedor,idarticulo,cantidad,preciocompra,porcientoGanancia,fecha)values("+
+                s + "," + productosnombre[i] + "," + cantidadproducto[i] + "," + preciocompra[i] + "," + porciento[i] + ",GETDATE())";
+
+            cmd = new SqlCommand(sentencia, con);
+            cmd.ExecuteReader();
+        }
+
+        for (int i = 0; i < productosnombre.Length; i++)
+        {
+
+            SqlCommand cc = new SqlCommand("select existencia from articulos where idArticulo=" + productosnombre[i], con);
+            SqlDataReader res = cc.ExecuteReader();
+            string cantidad = "0";
+            while (res.Read())
+            {
+                cantidad = res["existencia"].ToString();
+            }
+
+            int nuevototal = (Convert.ToInt16(cantidad) + Convert.ToInt16(cantidadproducto[i]));
+            string sen = "update articulos set existencia =" + nuevototal + " where idArticulo=" + productosnombre[i];
+            Console.Write(sen);
+            SqlCommand cmd3 = new SqlCommand(sen, con);
+            cmd3.ExecuteReader();
+        }
+
+
 
         return true;
     }

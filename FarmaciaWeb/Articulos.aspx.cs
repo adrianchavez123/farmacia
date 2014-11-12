@@ -12,10 +12,11 @@ public partial class Articulos : System.Web.UI.Page
     {
         con = new Conexion();
         mostrarPanel(3);
-        Response.Write("<script>alert('"+Session["admin"]+"')</script>");
-        if ((String)Session["admin"] ==null)
+        //Response.Write("<script>alert('"+Session["admin"]+"')</script>");
+        if ((String)Session["puesto"] ==null)
         {
             Response.Write("<script>alert('Para acceder a este contenido debes iniciar sesion')</script>");
+            Response.Redirect("Default.aspx");
         }
     }
     private void limpiarCampos()
