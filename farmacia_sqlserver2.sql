@@ -100,7 +100,7 @@ create table detalleVentas
 		cantidad int not null,
 		foreign key (folioVenta) references ventas(folioVenta),
 		foreign key (idArticulo) references articulos(idArticulo),
-		primary key (folioVenta)
+		primary key (folioDetalleVenta)
 	)
 go
 
