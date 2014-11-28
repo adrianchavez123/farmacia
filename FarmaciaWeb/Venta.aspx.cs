@@ -4,14 +4,17 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
+
+using System.Web.Services;
+using System.Web.Script.Services;
+
 public partial class Venta : System.Web.UI.Page
 {
-    Conexion con;
+    static Conexion con;
     String []productos;
     TextBox []cantidad;
     Label[] nombre,precion,existencia;
@@ -22,16 +25,18 @@ public partial class Venta : System.Web.UI.Page
     string[] cantidadproducto;
     string[] precioproducto;
     string[] nombreArticulo;
+    static string id;
     protected void Page_Load(object sender, EventArgs e)
     {
+        
         con = new Conexion();
         if ((String)Session["puesto"] == null)
         {
             Response.Write("<script>alert('Para acceder a este contenido debes iniciar sesion')</script>");
             Response.Redirect("Default.aspx");
         }
-        
-        productos = con.getArticulos();
+       id = (String)Session["id"];
+       /* productos = con.getArticulos();
         cantidad = new TextBox[productos.Length];
         nombre = new Label[productos.Length];
         precion = new Label[productos.Length];
@@ -115,7 +120,7 @@ public partial class Venta : System.Web.UI.Page
         realizar.Font.Size = FontUnit.Point(30);
         //calcular.ControlStyle.CssClass = "button";
         realizar.Click += new EventHandler(venta);
-        form1.Controls.Add(realizar);
+        form1.Controls.Add(realizar);*/
     }
 
     void test(object sender, EventArgs e)
@@ -132,7 +137,7 @@ public partial class Venta : System.Web.UI.Page
 
         bool venta = con.realizarventa(productosnombre, cantidadproducto, id);
 
-        generarPdf();
+        //generarPdf();
         descargar();
         limpiar();
         Response.Write("<script>alert('Venta exitosa.')</script>");
@@ -196,11 +201,13 @@ public partial class Venta : System.Web.UI.Page
         lblTotal.Text = "Total";
     }
 
-    void generarPdf()
+    static void generarPdf(string []prod,string []precio, string []cantidad)
     {
         
         Document doc = new Document(new Rectangle(200f, 500f));
-        PdfWriter.GetInstance(doc, new FileStream(Server.MapPath("ticket") + "\\ticket.pdf", FileMode.Create));
+        //PdfWriter.GetInstance(doc, new FileStream(Server.MapPath("ticket") + "\\ticket.pdf", FileMode.Create));
+        PdfWriter.GetInstance(doc, new FileStream("C:\\Users\\adrian\\Documents\\Visual Studio 2010\\WebSites\\FarmaciaWeb\\ticket\\ticket.pdf", FileMode.Create));
+        
         doc.Open();
         iTextSharp.text.Font _Font = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
 
@@ -232,18 +239,19 @@ public partial class Venta : System.Web.UI.Page
         tblPrueba.AddCell(clNombre);
         tblPrueba.AddCell(clApellido);
         tblPrueba.AddCell(clPais);
-
-        for (int i = 0; i < productosnombre.Length; i++)
+        double total = 0;
+        for (int i = 0; i < prod.Length; i++)
         {
-            clNombre = new PdfPCell(new Phrase(nombreArticulo[i], _standardFont));
+            clNombre = new PdfPCell(new Phrase(prod[i], _standardFont));
             clNombre.BorderWidth = 0;
 
-            clApellido = new PdfPCell(new Phrase(precioproducto[i], _standardFont));
+            clApellido = new PdfPCell(new Phrase(precio[i], _standardFont));
             clApellido.BorderWidth = 0;
 
-            clPais = new PdfPCell(new Phrase(cantidadproducto[i], _standardFont));
+            clPais = new PdfPCell(new Phrase(cantidad[i], _standardFont));
             clPais.BorderWidth = 0;
-
+            double d = Double.Parse(precio[i]) * Double.Parse(cantidad[i]);
+            total += d;
             
             tblPrueba.AddCell(clNombre);
             tblPrueba.AddCell(clApellido);
@@ -251,12 +259,12 @@ public partial class Venta : System.Web.UI.Page
         }
         doc.Add(tblPrueba);
         doc.Add(Chunk.NEWLINE);
-        doc.Add(new Paragraph(lblTotal.Text, _Font));
+        doc.Add(new Paragraph("Total: "+total, _Font));
         
         doc.Close();
     }
 
-    void descargar()
+     void descargar()
     {
         string nombre = "ticket.pdf";
         string ruta = "ticket/";
@@ -265,5 +273,46 @@ public partial class Venta : System.Web.UI.Page
         Response.AddHeader("Content-Disposition", "attachment; filename=" + nombre);
         Response.WriteFile(ruta + nombre);
         Response.End();
+    }
+
+    [WebMethod, ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
+    public static string getProducto(string producto)
+    {
+        Console.Write(producto);
+        String precio =con.getPrecio(producto);
+        string[] info = precio.Split('¬');
+        //Response.Write("<script>alert('"+producto+"')</script>");
+        return info[0] + "¬" +info[1];
+    }
+
+
+   /* [WebMethod, ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
+    public static string crearVenta(string []producto, string []precio,string []cantidad)
+    {
+        string id = "1";
+        bool venta =con.crearVenta(producto,precio,cantidad,id);
+         
+        
+        return "Venta exitosa.";
+    }*/
+    [WebMethod (EnableSession = true), ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
+   
+    public static string crearVenta(string arregloProductos,string arregloPrecio, string arregloCantidad)
+    {
+
+        string[] prod = arregloProductos.Split(',');
+        string[] precio = arregloPrecio.Split(',');
+        string[] cantidad = arregloCantidad.Split(',');
+        string[] producto = con.getIdsProductos(prod);
+        
+        bool venta = con.crearVenta(producto, precio, cantidad, id);
+        generarPdf(prod,precio,cantidad);
+        
+        //descargar();
+        return "Venta exitosa Ahora presiona el boton descargar para tener el ticket.";
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        descargar();
     }
 }

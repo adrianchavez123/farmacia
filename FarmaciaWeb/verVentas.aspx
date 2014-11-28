@@ -46,6 +46,8 @@
                 
               </ul>
             </li>
+            <li><a href="CerrarSesion.aspx">Cerrar Sesión</a>
+            </li> 
           </ul>
         </div>
 

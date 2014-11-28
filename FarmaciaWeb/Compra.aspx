@@ -46,6 +46,8 @@
                 
               </ul>
             </li>
+            <li><a href="CerrarSesion.aspx">Cerrar Sesión</a>
+            </li> 
           </ul>
         </div>
 
@@ -64,7 +66,7 @@
     <form id="form1" runat="server">
     <div style="height: 701px">
     
-        <asp:Panel ID="Panel1" runat="server" BackColor="#006666" Height="701px" 
+        <asp:Panel ID="Panel1" runat="server" BackColor="#CCCCFF" Height="701px" 
             Width="1217px">
             <asp:Label ID="Label1" runat="server" Text="Compras" Font-Bold="True" 
                 Font-Size="30pt"></asp:Label>

@@ -497,4 +497,90 @@ public class Conexion
 
         return true;
     }
+
+    public string getPrecio(string producto)
+    {
+        SqlCommand cc = new SqlCommand("select precioVenta,nombre from articulos where idArticulo=" + producto, con);
+        SqlDataReader res = cc.ExecuteReader();
+        string precio = "0";
+        string nombre = null;
+        while (res.Read())
+        {
+            precio = res["precioVenta"].ToString();
+            nombre = res["nombre"].ToString();
+        }
+        return precio+"¬"+nombre;
+    }
+
+    public bool crearVenta(string []producto, string []precio, string []cantidad,string empleado)
+    {
+        reader.Close();
+        string sentencia = "insert into ventas(fecha,idEmpleado)values(GETDATE()," + empleado + ")";
+
+        cmd = new SqlCommand(sentencia, con);
+
+        cmd.ExecuteNonQuery();
+
+
+        SqlCommand comand = new SqlCommand("select * from ventas", con);
+        SqlDataReader r = comand.ExecuteReader();
+        string folio = "";
+        while (r.Read())
+        {
+            folio = r["folioVenta"].ToString();
+        }
+
+        for (int a = 0; a < producto.Length; a++)
+        {
+            //cambiar folio venta
+            string sen = "insert into detalleventas(folioVenta,idArticulo,cantidad)values(" + folio + "," + producto[a] + "," + cantidad[a] + ")";
+            Console.Write(sen);
+            SqlCommand cmd2 = new SqlCommand(sen, con);
+            cmd2.ExecuteReader();
+
+        }
+
+        for (int i = 0; i < producto.Length; i++)
+        {
+
+            SqlCommand cc = new SqlCommand("select existencia from articulos where idArticulo=" + producto[i], con);
+            SqlDataReader res = cc.ExecuteReader();
+            string cant = "0";
+            while (res.Read())
+            {
+                cant = res["existencia"].ToString();
+            }
+
+            int nuevototal = (Convert.ToInt16(cant) - Convert.ToInt16(cantidad[i]));
+            string sen = "update articulos set existencia =" + nuevototal + " where idArticulo=" + producto[i];
+            Console.Write(sen);
+            SqlCommand cmd3 = new SqlCommand(sen, con);
+            cmd3.ExecuteReader();
+        }
+        return false;
+
+    }
+
+    public string[] getIdsProductos(string[] prod)
+    {
+       // string sentencia = "select * from articulos where activo = 1";
+        String[] producto = new String[prod.Length];
+        for (int j = 0; j < prod.Length; j++)
+        {
+            cmd = new SqlCommand("select idArticulo from articulos where nombre = '"+prod[j]+"'", con);
+            reader = cmd.ExecuteReader();
+            
+            while (reader.Read())
+            {
+                producto[j] = reader["idArticulo"].ToString();
+                
+
+            }
+
+        }
+         return producto;
+        
+
+       
+    }
 }
